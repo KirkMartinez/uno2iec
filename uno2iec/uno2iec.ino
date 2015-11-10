@@ -15,7 +15,7 @@ static const byte PROGMEM MAX_INPIN = 11, MAX_LOADPIN = 13, MAX_CLOCKPIN = 12;
 
 // Pin 13 has a LED connected on most Arduino boards.
 const byte ledPort = 13;
-const byte numBlinks = 4;
+const byte numBlinks = 2;
 const char connectionString[] PROGMEM = "connect_arduino:%u\r";
 const char okString[] PROGMEM = "OK>";
 
@@ -74,7 +74,6 @@ void setup()
 
 	lastMillis = millis();
 } // setup
-
 
 void loop()
 {
@@ -137,6 +136,15 @@ static void waitForPeer()
 		strcpy_P(tempBuffer, okString);
 		connected = COMPORT.find(tempBuffer);
 	} // while(not connected)
+
+
+	// 3 flashes means we are connected...
+	for(byte i = 0; i < 3; ++i) {
+		digitalWrite(ledPort, HIGH);   // turn the LED on (HIGH is the voltage level)
+		delay(125);               // wait for a second
+		digitalWrite(ledPort, LOW);   // turn the LED on (HIGH is the voltage level)
+		delay(125);               // wait for a second
+	}
 
 	// Now read the whole configuration string from host, ends with CR. If we don't get THIS string, we're in a bad state.
 	if(COMPORT.readBytesUntil('\r', tempBuffer, sizeof(tempBuffer))) {

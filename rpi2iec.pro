@@ -13,6 +13,8 @@ TEMPLATE = app
 
 DEFINES += CONSOLE_DEBUG
 
+CONFIG += c++11
+
 win32-msvc* {
 	# Multiple build processes with jom
 	# only works in .pro file for MSVC compilers, for gnu add -j8 in projects / make
